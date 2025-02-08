@@ -1,0 +1,33 @@
+.form-container {
+  display: flex;
+  width: var(--form-width);
+  height: var(--container-height);
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform var(--transition-speed) ease-in-out;
+  background-image: url("../../../assets/images/wp3203655.jpg");
+}
+
+.form-wrapper {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity var(--transition-speed) ease-in-out;
+}
+
+.register-form {
+  display: none;
+}
+
+.form-container.register-active .register-form {
+  display: flex;
+}
+
+.form-container.register-active .login-form {
+  display: none;
+}

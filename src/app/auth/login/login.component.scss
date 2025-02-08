@@ -1,0 +1,111 @@
+:root {
+  --transition-speed: 1.8s; /* Velocidad de animación ajustada */
+  --primary-color: #007bff;
+  --secondary-color: #f0f0f0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url("../../../assets/images/wp3203655.jpg");
+}
+
+/* Contenedor principal */
+.container {
+  margin: 15rem auto;
+  position: relative;
+  width: 60%;
+
+  height: 30rem;
+  display: flex;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedor de formularios y slider */
+.slider-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: red;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  transition: transform var(--transition-speed) ease-in-out;
+}
+
+/* Cuando se activa el registro, el slider se mueve */
+.container.register-active .slider-container {
+  transform: translateX(100%);
+}
+
+/* Contenedor de los formularios */
+.form-container {
+  display: flex;
+  width: 100%;
+  background-color: white;
+  transition: transform var(--transition-speed) ease-in-out;
+}
+
+/* Animación del formulario */
+.login-form,
+.register-form {
+  width: 50%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Botones e inputs */
+input,
+button {
+  width: 80%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input {
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  text-decoration: none;
+}
