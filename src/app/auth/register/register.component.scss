@@ -1,14 +1,14 @@
 .input-group {
   position: relative;
   width: 95%;
-  margin: 1rem auto;
+  margin: 0.5rem auto;
 
   input {
     width: 100%;
     margin: 0.5rem auto;
-    padding: 1rem;
+    padding: 0.8rem;
     border: 2px solid #ccc;
-    border-radius: 8px;
+    border-radius: 0.5px;
     font-size: 1rem;
     background: transparent;
     color: white;
@@ -36,6 +36,7 @@
       right: 0.6rem;
       font-size: 0.9rem;
       color: #a0f6fd;
+      background-color: transparent;
       padding: 0 0.5rem;
       z-index: 2;
     }
@@ -44,7 +45,7 @@
   label {
     position: absolute;
     top: 50%;
-    right: 1rem;
+    right: 0.5rem;
     transform: translateY(-50%);
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.7);
@@ -78,7 +79,6 @@
 .double-column {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
   width: 95%;
   margin: 0 auto;
 }
@@ -94,8 +94,7 @@
 button {
   width: 90%;
   padding: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   border-radius: 8px;
   font-size: 1rem;
   background: #007bff;
