@@ -1,33 +1,114 @@
-.form-container {
-  display: flex;
-  width: var(--form-width);
-  height: var(--container-height);
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+.input-group {
   position: relative;
-  transition: transform var(--transition-speed) ease-in-out;
-  background-image: url("../../../assets/images/wp3203655.jpg");
+  width: 95%;
+  margin: 1rem auto;
+
+  input {
+    width: 100%;
+    margin: 0.5rem auto;
+    padding: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: transparent;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    z-index: 1;
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:focus {
+      border-color: #ff8bfc;
+      background-color: transparent;
+    }
+
+    &:hover {
+      border-color: #a0f6fd;
+      background-color: transparent;
+    }
+
+    &:focus + label,
+    &:not(:placeholder-shown) + label {
+      top: -0.4rem;
+      right: 0.6rem;
+      font-size: 0.9rem;
+      color: #a0f6fd;
+      padding: 0 0.5rem;
+      z-index: 2;
+    }
+  }
+
+  label {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+
+    /* Fondo dinámico para cubrir la línea */
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -2px;
+      height: 2px;
+      width: calc(100% + 4px);
+      background: #00000071;
+      z-index: 1;
+      transition: all 0.3s ease-in-out;
+      pointer-events: none;
+    }
+  }
+
+  /* Cuando el placeholder se eleva */
+  &:focus-within label::after,
+  &:not(:placeholder-shown) label::after {
+    background: transparent;
+    width: 0;
+  }
 }
 
-.form-wrapper {
-  flex: 1;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: opacity var(--transition-speed) ease-in-out;
+// Contenedor para organizar campos en dos columnas
+.double-column {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 95%;
+  margin: 0 auto;
 }
 
-.register-form {
-  display: none;
+.email-column {
+  display: grid;
+  grid-template-columns: repeat(1fr);
+  width: 100%;
+  margin: 0 auto;
 }
 
-.form-container.register-active .register-form {
-  display: flex;
-}
+// Botones
+button {
+  width: 90%;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
 
-.form-container.register-active .login-form {
-  display: none;
+  &:hover {
+    background: #0056b3;
+  }
+}
+.input-group input[type="email"] {
+  width: 98%;
+  margin: 0 auto;
 }

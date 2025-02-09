@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from '../services/service.service';
 import { User } from '../models/user.model';
-import { tap } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { CommonModule } from '@angular/common';
 
@@ -13,7 +11,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [CommonModule, FormsModule, HttpClientModule], // Asegura que CommonModule está aquí
+  imports: [CommonModule, FormsModule],
 })
 export class RegisterComponent implements OnInit {
   user: User = {
@@ -28,7 +26,8 @@ export class RegisterComponent implements OnInit {
     role: 'Usuario',
   };
 
-  users: User[] = []; // Lista de usuarios
+  confirmPassword: string = '';
+  users: User[] = [];
 
   constructor(private serviceService: ServiceService, private router: Router) {}
 
@@ -37,11 +36,17 @@ export class RegisterComponent implements OnInit {
   }
 
   register(): void {
+    if (!this.user.password || !this.confirmPassword) {
+      alert('Ambos campos de contraseña son obligatorios');
+      return;
+    }
+
+    if (this.user.password !== this.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
     // Convertir la fecha a formato ISO antes de enviar al backend
     this.user.dateOfBirth = new Date(this.user.dateOfBirth).toISOString();
-
-    console.log('Datos enviados al backend:', this.user); // ✅ Verificar antes de enviar
-
     this.serviceService.register(this.user).subscribe({
       next: (response) => {
         console.log('Respuesta del servidor:', response);
@@ -65,10 +70,10 @@ export class RegisterComponent implements OnInit {
   loadUsers(): void {
     this.serviceService.getUsers().subscribe(
       (data) => {
-        console.log('Respuesta completa de la API:', data); // Revisa la consola
+        console.log('Respuesta completa de la API:', data);
 
         if (Array.isArray(data)) {
-          this.users = data; // Solo asigna si es un array válido
+          this.users = data;
         }
       },
       (error) => {
@@ -90,5 +95,6 @@ export class RegisterComponent implements OnInit {
       phoneNumber: '',
       role: 'Usuario',
     };
+    this.confirmPassword = '';
   }
 }

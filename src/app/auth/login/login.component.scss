@@ -1,111 +1,222 @@
-:root {
-  --transition-speed: 1.8s; /* Velocidad de animación ajustada */
-  --primary-color: #007bff;
-  --secondary-color: #f0f0f0;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// Fondo del contenedor principal
+.main-container {
+  width: 100vw;
   height: 100vh;
-  background-image: url("../../../assets/images/wp3203655.jpg");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../../../assets/images/wp3203655.jpg") no-repeat center
+    center/cover;
+
+  // Contenedor de Login y Registro
+  .container {
+    width: clamp(50%, 60%, 90%);
+    height: clamp(50vh, 80vh, 90vh);
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    background: #00000071;
+
+    // Slider que se mueve entre Login y Registro
+    .slider-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: url("../../../assets/images/car_whas_1.jpg") no-repeat center
+        center/cover;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 3;
+      transition: transform 1.2s ease-in-out;
+
+      .slider-content {
+        margin-top: 30rem;
+        width: 80%;
+        color: white;
+      }
+    }
+
+    // Estado activado del registro
+    &.register-active {
+      .slider-container {
+        transform: translateX(100%);
+      }
+    }
+
+    // Contenedor de formularios (Login y Registro)
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      transition: transform 1.2s ease-in-out;
+
+      // Formulario de Login y Registro divididos
+      .form-wrapper {
+        flex: 1;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-sizing: border-box;
+        gap: 1rem;
+
+        .email {
+          margin: 0 auto;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        // Formulario de login
+        &.login-form {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          align-content: center;
+          border-right: 1px solid #ddd;
+          color: white;
+          gap: 1rem;
+        }
+
+        // Formulario de registro
+        &.register-form {
+          width: 100%;
+          border-right: 1px solid #ddd;
+          color: white;
+          button {
+            width: 90%;
+            background: #007bff;
+            &:hover {
+              background: #0056b3;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-/* Contenedor principal */
-.container {
-  margin: 15rem auto;
+// Estilos para los inputs
+.input-group {
   position: relative;
-  width: 60%;
+  width: 80%;
+  margin: 0 auto;
+  gap: 1.5rem;
 
-  height: 30rem;
-  display: flex;
-  overflow: hidden;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin-top: 2.5rem;
+    background: transparent;
+    color: white;
+    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+    &:hover {
+      border-color: #a0f6fd;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #ff8bfc;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    &:focus + label,
+    &:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 1rem;
+      font-size: 0.8rem;
+      color: #a0f6fd;
+    }
+  }
+
+  label {
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+  }
 }
 
-/* Contenedor de formularios y slider */
-.slider-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background-color: red;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-  transition: transform var(--transition-speed) ease-in-out;
-}
-
-/* Cuando se activa el registro, el slider se mueve */
-.container.register-active .slider-container {
-  transform: translateX(100%);
-}
-
-/* Contenedor de los formularios */
-.form-container {
-  display: flex;
-  width: 100%;
-  background-color: white;
-  transition: transform var(--transition-speed) ease-in-out;
-}
-
-/* Animación del formulario */
-.login-form,
-.register-form {
-  width: 50%;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #ccc;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: opacity 0.5s ease-in-out;
-}
-
-/* Botones e inputs */
-input,
+// Estilos para botones
 button {
   width: 80%;
-  padding: 0.8rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  border-radius: 8px;
   font-size: 1rem;
-}
-
-input {
-  border: 1px solid #ccc;
-}
-
-button {
-  background-color: var(--primary-color);
+  background: #007bff;
   color: white;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
+  transition: background 0.3s ease-in-out;
 
-button:hover {
-  background-color: #0056b3;
+  &:hover {
+    background: #0056b3;
+  }
 }
-
 .link-btn {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  cursor: pointer;
-  text-decoration: underline;
+  margin-top: 0.1rem;
+  margin-bottom: -3rem;
+}
+// Media queries para responsividad
+@media (max-width: 1024px) {
+  .container {
+    width: 80%;
+    height: 70vh;
+  }
 }
 
-.link-btn:hover {
-  text-decoration: none;
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    height: 60vh;
+    flex-direction: column;
+
+    .slider-container {
+      width: 100%;
+      height: 40%;
+      top: 0;
+      left: 0;
+      transform: translateY(0);
+    }
+
+    &.register-active {
+      .slider-container {
+        transform: translateY(100%);
+      }
+    }
+
+    .form-container {
+      flex-direction: column;
+
+      .form-wrapper {
+        width: 100%;
+      }
+    }
+  }
 }

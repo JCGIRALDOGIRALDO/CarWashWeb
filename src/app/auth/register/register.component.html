@@ -1,38 +1,117 @@
 <h2>Registro de Usuario</h2>
 <form (ngSubmit)="register()">
-  <label>Nombre:</label>
-  <input type="text" [(ngModel)]="user.firstName" name="firstName" required />
+  <!-- Primera fila: Nombre y Apellido -->
+  <div class="double-column">
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="user.firstName"
+        name="firstName"
+        required
+        placeholder="Nombre"
+      />
+      <label>Nombre</label>
+    </div>
 
-  <label>Apellido:</label>
-  <input type="text" [(ngModel)]="user.lastName" name="lastName" required />
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="user.lastName"
+        name="lastName"
+        required
+        placeholder="Apellido"
+      />
+      <label>Apellido</label>
+    </div>
+  </div>
 
-  <label>Email:</label>
-  <input type="email" [(ngModel)]="user.email" name="email" required />
+  <!-- Segunda fila: Email -->
+  <div class="email-column">
+    <div class="input-group">
+      <input
+        type="email"
+        [(ngModel)]="user.email"
+        name="email"
+        required
+        placeholder="Email"
+      />
+      <label>Email</label>
+    </div>
+  </div>
 
-  <label>Contraseña:</label>
-  <input type="password" [(ngModel)]="user.password" name="password" required />
+  <!-- Tercera fila: Contraseña y Validar Contraseña -->
+  <div class="double-column">
+    <div class="input-group">
+      <input
+        type="password"
+        [(ngModel)]="user.password"
+        name="password"
+        required
+        placeholder="Contraseña"
+      />
+      <label>Contraseña</label>
+    </div>
 
-  <label>Fecha de nacimiento:</label>
-  <input
-    type="date"
-    [(ngModel)]="user.dateOfBirth"
-    name="dateOfBirth"
-    required
-  />
+    <div class="input-group">
+      <input
+        type="password"
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+        required
+        placeholder="Validar contraseña"
+      />
+      <label>Validar contraseña</label>
+    </div>
+  </div>
 
-  <label>País:</label>
-  <input type="text" [(ngModel)]="user.country" name="country" required />
+  <!-- Cuarta fila: Fecha de nacimiento y Teléfono -->
+  <div class="double-column">
+    <div class="input-group">
+      <input
+        type="date"
+        [(ngModel)]="user.dateOfBirth"
+        name="dateOfBirth"
+        required
+      />
+    </div>
 
-  <label>Ciudad:</label>
-  <input type="text" [(ngModel)]="user.city" name="city" required />
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="user.phoneNumber"
+        name="phoneNumber"
+        required
+        placeholder="Teléfono"
+      />
+      <label>Teléfono</label>
+    </div>
+  </div>
 
-  <label>Teléfono:</label>
-  <input
-    type="text"
-    [(ngModel)]="user.phoneNumber"
-    name="phoneNumber"
-    required
-  />
+  <!-- Quinta fila: País y Ciudad -->
+  <div class="double-column">
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="user.country"
+        name="country"
+        required
+        placeholder="País"
+      />
+      <label>País</label>
+    </div>
 
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="user.city"
+        name="city"
+        required
+        placeholder="Ciudad"
+      />
+      <label>Ciudad</label>
+    </div>
+  </div>
+
+  <!-- Botón de registro -->
   <button type="submit">Registrar</button>
 </form>

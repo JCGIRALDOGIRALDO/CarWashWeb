@@ -16,7 +16,7 @@ export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
-  isRegistering = false;
+  isRegistering = true;
 
   constructor(
     private authService: AuthServiceService,
@@ -38,7 +38,6 @@ export class LoginComponent {
     this.isRegistering = !this.isRegistering;
   }
   register(): void {
-    // Llamada de registro simulada
     alert('Registro de usuario exitoso (simulado)');
   }
 }

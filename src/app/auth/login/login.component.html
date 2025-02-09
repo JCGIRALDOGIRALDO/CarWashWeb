@@ -1,59 +1,73 @@
-<div class="container" [ngClass]="{ 'register-active': isRegistering }">
-  <!-- Contenedor que incluye slider y formularios -->
-  <div class="form-slider-wrapper">
-    <!-- Slider (Tapa de color azul) -->
-    <div class="slider-container">
-      <div class="slider-content">
-        <h2 *ngIf="!isRegistering">¡Bienvenido de nuevo!</h2>
-        <h2 *ngIf="isRegistering">¡Únete a nosotros!</h2>
-        <p *ngIf="!isRegistering">
-          Inicia sesión para acceder a tu cuenta y seguir gestionando tu
-          información.
-        </p>
-        <p *ngIf="isRegistering">
-          Regístrate para obtener una cuenta y aprovechar todas nuestras
-          funcionalidades.
-        </p>
+<div class="main-container">
+  <div class="container" [ngClass]="{ 'register-active': isRegistering }">
+    <!-- Contenedor que incluye slider y formularios -->
+    <div class="form-slider-wrapper">
+      <!-- Slider (Tapa de color azul) -->
+      <div class="slider-container">
+        <div class="slider-content">
+          <h2 *ngIf="!isRegistering">¡Únete a nosotros!</h2>
+          <h2 *ngIf="isRegistering">¡Bienvenido de nuevo!</h2>
+          <p *ngIf="!isRegistering">
+            Regístrate para obtener una cuenta y aprovechar todos nuestros
+            servicios.
+          </p>
+          <p *ngIf="isRegistering">
+            Inicia sesión para acceder a tu cuenta y disfruta de todos los
+            beneficios y servicios que hemos diseñado para ti.
+          </p>
+        </div>
       </div>
-    </div>
 
-    <!-- Contenedor de los formularios -->
-    <div class="form-container">
-      <!-- Formulario de Login -->
-      <div class="form-wrapper login-form">
-        <h2>Iniciar Sesión</h2>
-        <form (ngSubmit)="login()">
-          <label>Email:</label>
-          <input type="email" [(ngModel)]="email" name="email" required />
+      <!-- Contenedor de los formularios -->
+      <div class="form-container">
+        <!-- Formulario de Login -->
+        <div class="form-wrapper login-form">
+          <h2>Iniciar Sesión</h2>
+          <form (ngSubmit)="login()">
+            <div class="input-group">
+              <input
+                class="email"
+                type="email"
+                [(ngModel)]="email"
+                name="email"
+                required
+                placeholder=" "
+              />
+              <label>Email</label>
+            </div>
 
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            [(ngModel)]="password"
-            name="password"
-            required
-          />
+            <div class="input-group">
+              <input
+                type="password"
+                [(ngModel)]="password"
+                name="password"
+                required
+                placeholder=" "
+              />
+              <label>Contraseña</label>
+            </div>
 
-          <button type="submit">Iniciar sesión</button>
-          <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+            <button type="submit">Iniciar sesión</button>
+            <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+            <p class="notThis">
+              ¿No tienes una cuenta?
+              <button class="link-btn" (click)="toggleRegister()">
+                Regístrate aquí
+              </button>
+            </p>
+          </form>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <div class="form-wrapper register-form">
+          <app-register></app-register>
           <p>
-            ¿No tienes una cuenta?
+            ¿Ya tienes una cuenta?
             <button class="link-btn" (click)="toggleRegister()">
-              Regístrate aquí
+              Inicia sesión aquí
             </button>
           </p>
-        </form>
-      </div>
-
-      <!-- Formulario de Registro -->
-      <div class="form-wrapper register-form">
-        <app-register></app-register>
-        <p>
-          ¿Ya tienes una cuenta?
-          <button class="link-btn" (click)="toggleRegister()">
-            Inicia sesión aquí
-          </button>
-        </p>
+        </div>
       </div>
     </div>
   </div>
