@@ -17,14 +17,30 @@ export class LoginComponent {
   password = '';
   errorMessage = '';
   isRegistering = true;
+  loginType: 'Usuario' | 'Empresa' = 'Usuario';
 
   constructor(
     private authService: AuthServiceService,
     private router: Router
   ) {}
 
+  toggleRegister(): void {
+    this.isRegistering = !this.isRegistering;
+  }
+
+  setLoginType(type: 'Usuario' | 'Empresa'): void {
+    this.loginType = type;
+  }
+
   login(): void {
-    this.authService.login(this.email, this.password).subscribe({
+    const loginData = { email: this.email, password: this.password };
+
+    const request$ =
+      this.loginType === 'Usuario'
+        ? this.authService.loginUsuario(loginData)
+        : this.authService.loginEmpresa(loginData);
+
+    request$.subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/home']);
@@ -33,11 +49,5 @@ export class LoginComponent {
         this.errorMessage = 'Credenciales incorrectas';
       },
     });
-  }
-  toggleRegister(): void {
-    this.isRegistering = !this.isRegistering;
-  }
-  register(): void {
-    alert('Registro de usuario exitoso (simulado)');
   }
 }

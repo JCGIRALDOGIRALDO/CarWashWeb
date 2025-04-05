@@ -47,7 +47,26 @@
               <label>Contraseña</label>
             </div>
 
+            <!-- Botones de selección de tipo de usuario -->
+            <div class="user-type-selection">
+              <button
+                type="button"
+                [ngClass]="{ selected: loginType === 'Usuario' }"
+                (click)="setLoginType('Usuario')"
+              >
+                Soy Usuario
+              </button>
+              <button
+                type="button"
+                [ngClass]="{ selected: loginType === 'Empresa' }"
+                (click)="setLoginType('Empresa')"
+              >
+                Soy Empresa
+              </button>
+            </div>
+
             <button type="submit">Iniciar sesión</button>
+
             <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
             <p class="notThis">
               ¿No tienes una cuenta?

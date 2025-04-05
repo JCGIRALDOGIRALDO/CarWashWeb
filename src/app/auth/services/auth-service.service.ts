@@ -24,4 +24,11 @@ export class AuthServiceService {
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');
   }
+  loginUsuario(data: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, data);
+  }
+
+  loginEmpresa(data: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/Clients/login`, data);
+  }
 }

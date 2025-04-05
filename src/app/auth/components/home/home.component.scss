@@ -1,18 +1,29 @@
-.home-container {
-  text-align: center;
-  margin-top: 2rem;
+.sidenav-container {
+  height: 100vh;
 }
-button {
-  display: inline-block;
-  margin-top: 2rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
+
+.sidenav {
+  width: 60px;
+  transition: width 0.3s ease-in-out;
   background-color: #007bff;
   color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
+
+  &:hover {
+    width: 200px;
+  }
+
+  a {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
 }
-button:hover {
-  background-color: #0056b3;
+
+.main-content {
+  padding: 2rem;
 }

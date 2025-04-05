@@ -70,7 +70,7 @@ export class RegisterComponent implements OnInit {
   loadUsers(): void {
     this.serviceService.getUsers().subscribe(
       (data) => {
-        console.log('Respuesta completa de la API:', data);
+        //console.log('Respuesta completa de la API:', data);
 
         if (Array.isArray(data)) {
           this.users = data;
