@@ -20,10 +20,20 @@ import { RouterModule } from '@angular/router';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  isHovered = false;
+
   constructor(private router: Router) {}
 
   logout(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  onMouseEnter(): void {
+    this.isHovered = true;
+  }
+
+  onMouseLeave(): void {
+    this.isHovered = false;
   }
 }

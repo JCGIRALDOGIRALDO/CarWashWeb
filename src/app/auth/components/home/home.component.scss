@@ -1,29 +1,166 @@
-.sidenav-container {
+.layout {
+  display: flex;
   height: 100vh;
+  transition: all 0.3s ease;
+
+  &.expanded {
+    .sidebar {
+      width: 17rem;
+      background-color: #e3f2fd;
+    }
+
+    .main-content {
+      margin-left: 17rem;
+    }
+  }
 }
 
-.sidenav {
-  width: 60px;
-  transition: width 0.3s ease-in-out;
-  background-color: #007bff;
+.sidebar {
+  width: 5rem;
+  background-color: #182a40;
   color: white;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  &:hover {
-    width: 200px;
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+
+    .logo {
+      transition: all 0.3s ease;
+
+      &.small {
+        width: 3rem;
+      }
+
+      &.large {
+        width: 10rem;
+      }
+    }
   }
 
-  a {
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
 
-    &:hover {
-      background-color: #0056b3;
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+      color: white;
+      text-decoration: none;
+      gap: 1rem;
+      transition: background 0.3s, color 0.3s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+
+        .icon {
+          transform: scale(1.15);
+        }
+
+        span {
+          color: #0d47a1;
+        }
+      }
+
+      &.active {
+        background-color: rgba(255, 255, 255, 0.25);
+
+        .icon {
+          transform: scale(1.2);
+        }
+
+        span {
+          color: #0d47a1;
+          font-weight: 600;
+        }
+      }
+
+      .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        transition: transform 0.3s ease;
+      }
+
+      span {
+        font-size: 1.1rem;
+        white-space: nowrap;
+        color: black;
+        transition: color 0.3s;
+      }
+    }
+
+    // Alinea texto e ícono a la izquierda cuando está expandido
+    .layout.expanded & a {
+      justify-content: flex-start;
+      padding-left: 1.5rem;
+    }
+  }
+
+  .logout {
+    margin-bottom: 2rem;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+      gap: 1rem;
+      text-decoration: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+
+        .icon {
+          transform: scale(1.15);
+        }
+
+        span {
+          color: #d32f2f;
+        }
+      }
+
+      .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        transition: transform 0.3s ease;
+      }
+
+      span {
+        font-size: 1.1rem;
+        white-space: nowrap;
+        color: black;
+        transition: color 0.3s;
+      }
+
+      // Alinea cuando expandido
+      .layout.expanded & {
+        justify-content: flex-start;
+        padding-left: 1.5rem;
+      }
     }
   }
 }
 
 .main-content {
+  flex: 1;
+  margin-left: 5rem;
   padding: 2rem;
+  transition: margin-left 0.3s ease;
 }
