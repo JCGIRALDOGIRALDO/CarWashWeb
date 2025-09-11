@@ -1,13 +1,23 @@
-<div class="welcome-container">
-  <div class="welcome-text">
+<div class="dashboard-container">
+  <div class="dashboard-text">
     <h1>¡Bienvenido a Car Wash!</h1>
-    <p>
-      Como empresa, puedes gestionar los servicios y precios de lavado, ver las
-      citas y supervisar las ubicaciones.
+
+    <p *ngIf="userRole === 'cliente'">
+      Como empresa, puedes gestionar servicios, precios, citas y ubicaciones de
+      lavado.
+    </p>
+
+    <p *ngIf="userRole === 'usuario'">
+      Como usuario, puedes elegir servicios, agendar tu lavado, pagar y ver tus
+      facturas.
+    </p>
+
+    <p *ngIf="!userRole">
+      Rol no identificado. Por favor, inicia sesión nuevamente.
     </p>
   </div>
 
-  <div class="welcome-image">
+  <div class="dashboard-image">
     <img
       src="../../../assets/images/carLluvia.png"
       alt="Car Wash"

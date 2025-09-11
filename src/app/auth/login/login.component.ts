@@ -43,11 +43,14 @@ export class LoginComponent {
     request$.subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
+        if (response.userId)
+          localStorage.setItem('userId', String(response.userId));
+        if (response.empresaId)
+          localStorage.setItem('empresaId', String(response.empresaId));
+        localStorage.setItem('role', response.role);
         this.router.navigate(['/home']);
       },
-      error: () => {
-        this.errorMessage = 'Credenciales incorrectas';
-      },
+      error: () => (this.errorMessage = 'Credenciales incorrectas'),
     });
   }
 }

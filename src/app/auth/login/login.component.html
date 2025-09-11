@@ -1,8 +1,6 @@
 <div class="main-container">
   <div class="container" [ngClass]="{ 'register-active': isRegistering }">
-    <!-- Contenedor que incluye slider y formularios -->
     <div class="form-slider-wrapper">
-      <!-- Slider (Tapa de color azul) -->
       <div class="slider-container">
         <div class="slider-content">
           <h2 *ngIf="!isRegistering">¡Únete a nosotros!</h2>
@@ -20,7 +18,6 @@
 
       <!-- Contenedor de los formularios -->
       <div class="form-container">
-        <!-- Formulario de Login -->
         <div class="form-wrapper login-form">
           <h2>Iniciar Sesión</h2>
           <form (ngSubmit)="login()">

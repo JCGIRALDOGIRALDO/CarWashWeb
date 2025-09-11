@@ -52,7 +52,6 @@
     pointer-events: none;
     transition: all 0.3s ease-in-out;
 
-    /* Fondo dinámico para cubrir la línea */
     &::after {
       content: "";
       position: absolute;
@@ -67,7 +66,6 @@
     }
   }
 
-  /* Cuando el placeholder se eleva */
   &:focus-within label::after,
   &:not(:placeholder-shown) label::after {
     background: transparent;
@@ -75,7 +73,6 @@
   }
 }
 
-// Contenedor para organizar campos en dos columnas
 .double-column {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

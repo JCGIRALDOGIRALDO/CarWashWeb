@@ -1,37 +1,22 @@
-.welcome-container {
+.dashboard-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem;
   gap: 2rem;
-  flex-wrap: wrap;
-}
+  padding: 2rem;
 
-.welcome-text {
-  flex: 1;
-  min-width: 300px;
-
-  h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
+  .dashboard-text {
+    flex: 1;
   }
 
-  p {
-    font-size: 1.1rem;
-    color: #444;
-    line-height: 1.6;
-  }
-}
+  .dashboard-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
 
-.welcome-image {
-  flex: 1;
-  min-width: 250px;
-  display: flex;
-  justify-content: center;
-
-  .logo {
-    max-width: 100%;
-    height: auto;
+    .logo {
+      max-width: 100%;
+      height: auto;
+    }
   }
 }

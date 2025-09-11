@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ServiceService } from '../services/service.service';
-import { User } from '../models/user.model';
 import { FormsModule } from '@angular/forms';
-
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import {
+  UsuariosService,
+  CreateUsuarioDto,
+  Usuario,
+} from '../services/usuarios.service';
+import { AuthServiceService } from '../services/auth-service.service';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -14,73 +18,86 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, FormsModule],
 })
 export class RegisterComponent implements OnInit {
-  user: User = {
+  user = {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
+    phoneNumber: '',
     dateOfBirth: '',
     country: '',
     city: '',
-    phoneNumber: '',
     role: 'Usuario',
   };
 
-  confirmPassword: string = '';
-  users: User[] = [];
+  confirmPassword = '';
+  users: Usuario[] = [];
 
-  constructor(private serviceService: ServiceService, private router: Router) {}
+  constructor(
+    private usuariosService: UsuariosService,
+    private auth: AuthServiceService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    if (isPlatformBrowser(this.platformId) && this.auth.isAuthenticated()) {
+      this.loadUsers();
+    }
+  }
+
+  private notify(msg: string) {
+    if (isPlatformBrowser(this.platformId)) {
+      window.alert(msg);
+    } else {
+      console.log('[ALERT]', msg);
+    }
   }
 
   register(): void {
     if (!this.user.password || !this.confirmPassword) {
-      alert('Ambos campos de contraseña son obligatorios');
+      this.notify('Ambos campos de contraseña son obligatorios');
+      return;
+    }
+    if (this.user.password !== this.confirmPassword) {
+      this.notify('Las contraseñas no coinciden');
       return;
     }
 
-    if (this.user.password !== this.confirmPassword) {
-      alert('Las contraseñas no coinciden');
-      return;
-    }
-    // Convertir la fecha a formato ISO antes de enviar al backend
-    this.user.dateOfBirth = new Date(this.user.dateOfBirth).toISOString();
-    this.serviceService.register(this.user).subscribe({
-      next: (response) => {
-        console.log('Respuesta del servidor:', response);
-        alert('Usuario registrado exitosamente');
-        this.loadUsers();
+    const dto: CreateUsuarioDto = {
+      firstName: this.user.firstName.trim(),
+      lastName: this.user.lastName.trim(),
+      email: this.user.email.trim(),
+      password: this.user.password,
+      phone: this.user.phoneNumber?.trim() || undefined,
+    };
+
+    this.usuariosService.crear(dto).subscribe({
+      next: () => {
+        this.notify('Usuario registrado exitosamente');
         this.resetForm();
       },
       error: (error) => {
         console.error('Error en la solicitud:', error);
-        if (error.status === 400) {
-          alert('Solicitud inválida. Revisa los datos ingresados.');
-        } else if (error.status === 500) {
-          alert('Error interno en el servidor.');
-        } else {
-          alert('Error desconocido. Verifica la consola para más detalles.');
-        }
+        if (error.status === 400)
+          this.notify('Solicitud inválida. Revisa los datos.');
+        else if (error.status === 500)
+          this.notify('Error interno del servidor.');
+        else this.notify('Error desconocido. Revisa la consola.');
       },
     });
   }
 
   loadUsers(): void {
-    this.serviceService.getUsers().subscribe(
-      (data) => {
-        //console.log('Respuesta completa de la API:', data);
-
-        if (Array.isArray(data)) {
-          this.users = data;
-        }
+    this.usuariosService.listar().subscribe({
+      next: (data) => {
+        if (Array.isArray(data)) this.users = data;
       },
-      (error) => {
-        console.error('Error al cargar usuarios:', error);
-        alert('Error al cargar la lista de usuarios.');
-      }
-    );
+      error: (err) => {
+        console.error('Error al cargar usuarios:', err);
+        this.notify('Error al cargar la lista de usuarios.');
+      },
+    });
   }
 
   resetForm(): void {
@@ -89,10 +106,10 @@ export class RegisterComponent implements OnInit {
       lastName: '',
       email: '',
       password: '',
+      phoneNumber: '',
       dateOfBirth: '',
       country: '',
       city: '',
-      phoneNumber: '',
       role: 'Usuario',
     };
     this.confirmPassword = '';

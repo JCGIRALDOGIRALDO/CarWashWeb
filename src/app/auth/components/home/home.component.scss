@@ -103,7 +103,6 @@
       }
     }
 
-    // Alinea texto e ícono a la izquierda cuando está expandido
     .layout.expanded & a {
       justify-content: flex-start;
       padding-left: 1.5rem;
@@ -149,7 +148,6 @@
         transition: color 0.3s;
       }
 
-      // Alinea cuando expandido
       .layout.expanded & {
         justify-content: flex-start;
         padding-left: 1.5rem;
