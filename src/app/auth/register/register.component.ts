@@ -2,13 +2,14 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+
 import {
   UsuariosService,
   CreateUsuarioDto,
   Usuario,
 } from '../services/usuarios.service';
 import { AuthServiceService } from '../services/auth-service.service';
-import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -47,11 +48,21 @@ export class RegisterComponent implements OnInit {
   }
 
   private notify(msg: string) {
-    if (isPlatformBrowser(this.platformId)) {
-      window.alert(msg);
-    } else {
-      console.log('[ALERT]', msg);
-    }
+    if (isPlatformBrowser(this.platformId)) window.alert(msg);
+    else console.log('[ALERT]', msg);
+  }
+
+  loadUsers(): void {
+    this.usuariosService.listar().subscribe({
+      next: (data) => {
+        if (Array.isArray(data)) this.users = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar usuarios:', err);
+        if (err.status !== 401)
+          this.notify('Error al cargar la lista de usuarios.');
+      },
+    });
   }
 
   register(): void {
@@ -76,6 +87,7 @@ export class RegisterComponent implements OnInit {
       next: () => {
         this.notify('Usuario registrado exitosamente');
         this.resetForm();
+        if (this.auth.isAuthenticated()) this.loadUsers();
       },
       error: (error) => {
         console.error('Error en la solicitud:', error);
@@ -84,18 +96,6 @@ export class RegisterComponent implements OnInit {
         else if (error.status === 500)
           this.notify('Error interno del servidor.');
         else this.notify('Error desconocido. Revisa la consola.');
-      },
-    });
-  }
-
-  loadUsers(): void {
-    this.usuariosService.listar().subscribe({
-      next: (data) => {
-        if (Array.isArray(data)) this.users = data;
-      },
-      error: (err) => {
-        console.error('Error al cargar usuarios:', err);
-        this.notify('Error al cargar la lista de usuarios.');
       },
     });
   }
