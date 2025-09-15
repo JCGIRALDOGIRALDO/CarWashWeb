@@ -1,14 +1,19 @@
+// src/app/auth/services/auth-service.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../../environment/environment';
 
-interface LoginResponse {
+type LoginType = 'Usuario' | 'Empresa';
+
+export interface ApiLoginResponse {
   token: string;
   userId?: number;
   empresaId?: number;
-  role: string;
+  role?: string;
+  scopes?: any[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -17,35 +22,47 @@ export class AuthServiceService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  loginUsuario(data: {
-    email: string;
-    password: string;
-  }): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${this.api}/usuarios/login`, data)
-      .pipe(
-        tap((res) => {
-          localStorage.setItem('token', res.token);
-          if (res.userId) localStorage.setItem('userId', String(res.userId));
-          localStorage.setItem('role', res.role);
-        })
-      );
+  private roleFromToken(token?: string): string | null {
+    if (!token) return null;
+    try {
+      const decoded: any = jwtDecode(token);
+      const claim =
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+      const raw = decoded?.[claim];
+      return String(Array.isArray(raw) ? raw[0] : raw).trim() || null;
+    } catch {
+      return null;
+    }
   }
 
-  loginEmpresa(data: {
-    email: string;
-    password: string;
-  }): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${this.api}/empresas/login`, data)
-      .pipe(
-        tap((res) => {
-          localStorage.setItem('token', res.token);
-          if (res.empresaId)
-            localStorage.setItem('empresaId', String(res.empresaId));
-          localStorage.setItem('role', res.role);
-        })
-      );
+  login(
+    tipo: LoginType,
+    data: { email: string; password: string }
+  ): Observable<ApiLoginResponse> {
+    const url =
+      tipo === 'Usuario'
+        ? `${this.api}/usuarios/login`
+        : `${this.api}/empresas/login`;
+
+    return this.http.post<ApiLoginResponse>(url, data).pipe(
+      map((res) => {
+        const role = (
+          res.role ??
+          this.roleFromToken(res.token) ??
+          tipo
+        ).toString();
+        const empresaId =
+          res.empresaId ?? res.scopes?.[0]?.clientId ?? undefined;
+        return { ...res, role, empresaId };
+      }),
+      tap((res) => {
+        localStorage.setItem('token', res.token);
+        if (res.userId) localStorage.setItem('userId', String(res.userId));
+        if (res.empresaId)
+          localStorage.setItem('empresaId', String(res.empresaId));
+        if (res.role) localStorage.setItem('role', res.role);
+      })
+    );
   }
 
   logout(): void {

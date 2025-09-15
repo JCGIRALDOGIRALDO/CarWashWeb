@@ -1,24 +1,31 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { AuthServiceService } from '../services/auth-service.service';
 import {
   UsuariosService,
   CreateUsuarioDto,
-  Usuario,
 } from '../services/usuarios.service';
-import { AuthServiceService } from '../services/auth-service.service';
+import {
+  EmpresasService,
+  CreateEmpresaDto,
+} from '../services/empresas.service';
+
+type RegisterType = 'Usuario' | 'Empresa';
 
 @Component({
   selector: 'app-register',
   standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [CommonModule, FormsModule],
 })
 export class RegisterComponent implements OnInit {
+  tipo: RegisterType = 'Usuario';
+
   user = {
     firstName: '',
     lastName: '',
@@ -28,50 +35,47 @@ export class RegisterComponent implements OnInit {
     dateOfBirth: '',
     country: '',
     city: '',
-    role: 'Usuario',
+  };
+  confirmPassword = '';
+
+  company = {
+    razonSocial: '',
+    nombreComercial: '',
+    nit: '',
+    email: '',
+    password: '',
+    telefono: '',
+    direccion: '',
+    ciudad: '',
   };
 
-  confirmPassword = '';
-  users: Usuario[] = [];
-
   constructor(
-    private usuariosService: UsuariosService,
+    private usuariosSvc: UsuariosService,
+    private empresasSvc: EmpresasService,
     private auth: AuthServiceService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId) && this.auth.isAuthenticated()) {
-      this.loadUsers();
-    }
-  }
+  ngOnInit(): void {}
 
   private notify(msg: string) {
     if (isPlatformBrowser(this.platformId)) window.alert(msg);
     else console.log('[ALERT]', msg);
   }
 
-  loadUsers(): void {
-    this.usuariosService.listar().subscribe({
-      next: (data) => {
-        if (Array.isArray(data)) this.users = data;
-      },
-      error: (err) => {
-        console.error('Error al cargar usuarios:', err);
-        if (err.status !== 401)
-          this.notify('Error al cargar la lista de usuarios.');
-      },
-    });
+  changeType(t: RegisterType) {
+    this.tipo = t;
   }
 
-  register(): void {
-    if (!this.user.password || !this.confirmPassword) {
-      this.notify('Ambos campos de contraseña son obligatorios');
-      return;
-    }
-    if (this.user.password !== this.confirmPassword) {
-      this.notify('Las contraseñas no coinciden');
+  submit(): void {
+    if (this.tipo === 'Usuario') this.registerUsuario();
+    else this.registerEmpresa();
+  }
+
+  private registerUsuario(): void {
+    if (!this.user.password || this.user.password !== this.confirmPassword) {
+      this.notify('Las contraseñas no coinciden.');
       return;
     }
 
@@ -81,37 +85,54 @@ export class RegisterComponent implements OnInit {
       email: this.user.email.trim(),
       password: this.user.password,
       phone: this.user.phoneNumber?.trim() || undefined,
+      country: this.user.country?.trim() || undefined,
+      city: this.user.city?.trim() || undefined,
     };
 
-    this.usuariosService.crear(dto).subscribe({
-      next: () => {
-        this.notify('Usuario registrado exitosamente');
-        this.resetForm();
-        if (this.auth.isAuthenticated()) this.loadUsers();
+    this.usuariosSvc.crear(dto).subscribe({
+      next: (r) => {
+        this.notify('Usuario registrado exitosamente.');
+        if (!this.auth.isAuthenticated()) {
+          this.auth
+            .login('Usuario', { email: dto.email, password: dto.password })
+            .subscribe(() => this.router.navigate(['/home']));
+        }
       },
-      error: (error) => {
-        console.error('Error en la solicitud:', error);
-        if (error.status === 400)
-          this.notify('Solicitud inválida. Revisa los datos.');
-        else if (error.status === 500)
-          this.notify('Error interno del servidor.');
-        else this.notify('Error desconocido. Revisa la consola.');
+      error: (e) => {
+        console.error(e);
+        this.notify('No se pudo registrar el usuario.');
       },
     });
   }
 
-  resetForm(): void {
-    this.user = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phoneNumber: '',
-      dateOfBirth: '',
-      country: '',
-      city: '',
-      role: 'Usuario',
+  private registerEmpresa(): void {
+    if (!this.company.password) {
+      this.notify('Contraseña requerida.');
+      return;
+    }
+
+    const dto: CreateEmpresaDto = {
+      razonSocial: this.company.razonSocial.trim(),
+      nombreComercial: this.company.nombreComercial?.trim(),
+      nit: this.company.nit?.trim(),
+      email: this.company.email.trim(),
+      password: this.company.password,
+      telefono: this.company.telefono?.trim(),
+      direccion: this.company.direccion?.trim(),
+      ciudad: this.company.ciudad?.trim(),
     };
-    this.confirmPassword = '';
+
+    this.empresasSvc.registrar(dto).subscribe({
+      next: () => {
+        this.notify('Empresa registrada exitosamente.');
+        this.auth
+          .login('Empresa', { email: dto.email, password: dto.password })
+          .subscribe(() => this.router.navigate(['/home']));
+      },
+      error: (e) => {
+        console.error(e);
+        this.notify('No se pudo registrar la empresa.');
+      },
+    });
   }
 }

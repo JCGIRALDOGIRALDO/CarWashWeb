@@ -1,9 +1,10 @@
+// src/app/auth/login/login.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthServiceService } from '../services/auth-service.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RegisterComponent } from '../register/register.component';
+import { AuthServiceService } from '../services/auth-service.service';
 
 @Component({
   selector: 'app-login',
@@ -16,41 +17,42 @@ export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
-  isRegistering = true;
+  isRegistering = false;
   loginType: 'Usuario' | 'Empresa' = 'Usuario';
 
-  constructor(
-    private authService: AuthServiceService,
-    private router: Router
-  ) {}
+  constructor(private auth: AuthServiceService, private router: Router) {}
 
   toggleRegister(): void {
     this.isRegistering = !this.isRegistering;
   }
-
   setLoginType(type: 'Usuario' | 'Empresa'): void {
     this.loginType = type;
   }
 
   login(): void {
-    const loginData = { email: this.email, password: this.password };
+    this.errorMessage = '';
+    this.auth
+      .login(this.loginType, { email: this.email, password: this.password })
+      .subscribe({
+        next: (res) => {
+          const returnedRole = (res.role ?? this.loginType).toLowerCase();
 
-    const request$ =
-      this.loginType === 'Usuario'
-        ? this.authService.loginUsuario(loginData)
-        : this.authService.loginEmpresa(loginData);
+          if (this.loginType === 'Empresa' && returnedRole !== 'empresa') {
+            this.errorMessage =
+              'Este usuario no es de empresa. Usa "Soy Usuario".';
+            this.auth.logout();
+            return;
+          }
+          if (this.loginType === 'Usuario' && returnedRole !== 'usuario') {
+            this.errorMessage =
+              'Este usuario pertenece a una empresa. Usa "Soy Empresa".';
+            this.auth.logout();
+            return;
+          }
 
-    request$.subscribe({
-      next: (response) => {
-        localStorage.setItem('token', response.token);
-        if (response.userId)
-          localStorage.setItem('userId', String(response.userId));
-        if (response.empresaId)
-          localStorage.setItem('empresaId', String(response.empresaId));
-        localStorage.setItem('role', response.role);
-        this.router.navigate(['/home']);
-      },
-      error: () => (this.errorMessage = 'Credenciales incorrectas'),
-    });
+          this.router.navigate(['/home']);
+        },
+        error: () => (this.errorMessage = 'Credenciales incorrectas'),
+      });
   }
 }

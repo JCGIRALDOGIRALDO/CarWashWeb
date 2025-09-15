@@ -1,111 +1,213 @@
-<h2>Registro de Usuario</h2>
-<form (ngSubmit)="register()">
-  <div class="double-column">
-    <div class="input-group">
-      <input
-        type="text"
-        [(ngModel)]="user.firstName"
-        name="firstName"
-        required
-        placeholder="Nombre"
-      />
-      <label>Nombre</label>
+<h2>Registro</h2>
+
+<!-- Selector de tipo -->
+<div class="user-type-selection" style="margin-bottom: 1rem">
+  <button
+    type="button"
+    [ngClass]="{ selected: tipo === 'Usuario' }"
+    (click)="changeType('Usuario')"
+  >
+    Usuario
+  </button>
+  <button
+    type="button"
+    [ngClass]="{ selected: tipo === 'Empresa' }"
+    (click)="changeType('Empresa')"
+  >
+    Empresa
+  </button>
+</div>
+
+<form (ngSubmit)="submit()">
+  <!-- ================== USUARIO ================== -->
+  <ng-container *ngIf="tipo === 'Usuario'">
+    <div class="double-column">
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="user.firstName"
+          name="firstName"
+          required
+          placeholder="Nombre"
+        />
+        <label>Nombre</label>
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="user.lastName"
+          name="lastName"
+          placeholder="Apellido"
+        />
+        <label>Apellido</label>
+      </div>
     </div>
 
-    <div class="input-group">
-      <input
-        type="text"
-        [(ngModel)]="user.lastName"
-        name="lastName"
-        required
-        placeholder="Apellido"
-      />
-      <label>Apellido</label>
-    </div>
-  </div>
-
-  <div class="email-column">
-    <div class="input-group">
-      <input
-        type="email"
-        [(ngModel)]="user.email"
-        name="email"
-        required
-        placeholder="Email"
-      />
-      <label>Email</label>
-    </div>
-  </div>
-
-  <div class="double-column">
-    <div class="input-group">
-      <input
-        type="password"
-        [(ngModel)]="user.password"
-        name="password"
-        required
-        placeholder="Contraseña"
-      />
-      <label>Contraseña</label>
+    <div class="email-column">
+      <div class="input-group">
+        <input
+          type="email"
+          [(ngModel)]="user.email"
+          name="email"
+          required
+          placeholder="Email"
+        />
+        <label>Email</label>
+      </div>
     </div>
 
-    <div class="input-group">
-      <input
-        type="password"
-        [(ngModel)]="confirmPassword"
-        name="confirmPassword"
-        required
-        placeholder="Validar contraseña"
-      />
-      <label>Validar contraseña</label>
-    </div>
-  </div>
-
-  <div class="double-column">
-    <div class="input-group">
-      <input
-        type="date"
-        [(ngModel)]="user.dateOfBirth"
-        name="dateOfBirth"
-        required
-      />
-    </div>
-
-    <div class="input-group">
-      <input
-        type="text"
-        [(ngModel)]="user.phoneNumber"
-        name="phoneNumber"
-        required
-        placeholder="Teléfono"
-      />
-      <label>Teléfono</label>
-    </div>
-  </div>
-
-  <div class="double-column">
-    <div class="input-group">
-      <input
-        type="text"
-        [(ngModel)]="user.country"
-        name="country"
-        required
-        placeholder="País"
-      />
-      <label>País</label>
+    <div class="double-column">
+      <div class="input-group">
+        <input
+          type="password"
+          [(ngModel)]="user.password"
+          name="password"
+          required
+          placeholder="Contraseña"
+        />
+        <label>Contraseña</label>
+      </div>
+      <div class="input-group">
+        <input
+          type="password"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+          placeholder="Validar contraseña"
+        />
+        <label>Validar contraseña</label>
+      </div>
     </div>
 
-    <div class="input-group">
-      <input
-        type="text"
-        [(ngModel)]="user.city"
-        name="city"
-        required
-        placeholder="Ciudad"
-      />
-      <label>Ciudad</label>
+    <div class="double-column">
+      <div class="input-group">
+        <input type="date" [(ngModel)]="user.dateOfBirth" name="dateOfBirth" />
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="user.phoneNumber"
+          name="phoneNumber"
+          placeholder="Teléfono"
+        />
+        <label>Teléfono</label>
+      </div>
     </div>
-  </div>
+
+    <div class="double-column">
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="user.country"
+          name="country"
+          placeholder="País"
+        />
+        <label>País</label>
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="user.city"
+          name="city"
+          placeholder="Ciudad"
+        />
+        <label>Ciudad</label>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ================== EMPRESA ================== -->
+  <ng-container *ngIf="tipo === 'Empresa'">
+    <div class="email-column">
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="company.razonSocial"
+          name="razonSocial"
+          required
+          placeholder="Razón social"
+        />
+        <label>Razón social</label>
+      </div>
+    </div>
+
+    <div class="double-column">
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="company.nombreComercial"
+          name="nombreComercial"
+          placeholder="Nombre comercial"
+        />
+        <label>Nombre comercial</label>
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="company.nit"
+          name="nit"
+          placeholder="NIT"
+        />
+        <label>NIT</label>
+      </div>
+    </div>
+
+    <div class="email-column">
+      <div class="input-group">
+        <input
+          type="email"
+          [(ngModel)]="company.email"
+          name="companyEmail"
+          required
+          placeholder="Email"
+        />
+        <label>Email</label>
+      </div>
+    </div>
+
+    <div class="double-column">
+      <div class="input-group">
+        <input
+          type="password"
+          [(ngModel)]="company.password"
+          name="companyPassword"
+          required
+          placeholder="Contraseña"
+        />
+        <label>Contraseña</label>
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="company.telefono"
+          name="companyPhone"
+          placeholder="Teléfono"
+        />
+        <label>Teléfono</label>
+      </div>
+    </div>
+
+    <div class="double-column">
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="company.direccion"
+          name="direccion"
+          placeholder="Dirección"
+        />
+        <label>Dirección</label>
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="company.ciudad"
+          name="companyCity"
+          placeholder="Ciudad"
+        />
+        <label>Ciudad</label>
+      </div>
+    </div>
+  </ng-container>
 
   <button type="submit">Registrar</button>
 </form>
