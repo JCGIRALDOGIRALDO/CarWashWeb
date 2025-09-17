@@ -1,110 +1,132 @@
-.input-group {
-  position: relative;
-  width: 95%;
-  margin: 0.5rem auto;
+/* Ocupa y centra dentro del panel derecho (50%) */
+.register-wrapper {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 1rem 0;
+}
 
+.card {
+  width: 100%;
+  max-width: 520px; /* << cabemos en media pantalla */
+  padding: 1.25rem 1.1rem;
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.32);
+}
+
+.title {
+  margin: 0.25rem 0 1rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Selector Usuario/Empresa */
+.segmented {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 0 0 1rem;
+  button {
+    flex: 1;
+    max-width: 220px;
+    border: 0;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.12s, background 0.2s, box-shadow 0.2s;
+    &:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    &.active {
+      background: #1976d2;
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.25) inset;
+    }
+  }
+}
+
+/* Layout */
+.grid {
+  display: grid;
+  gap: 0.8rem;
+  &.one {
+    grid-template-columns: 1fr;
+  }
+  &.two {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 720px) {
+    &.two {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* Campos con etiqueta flotante */
+.field {
+  position: relative;
   input {
     width: 100%;
-    margin: 0.5rem auto;
-    padding: 0.8rem;
-    border: 2px solid #ccc;
-    border-radius: 0.5px;
-    font-size: 1rem;
-    background: transparent;
-    color: white;
-    transition: all 0.3s ease-in-out;
-    outline: none;
-    z-index: 1;
-
+    padding: 1rem 0.9rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    outline: 0;
+    transition: border 0.15s, background 0.15s;
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    &:focus {
+      border-color: #90caf9;
+      background: rgba(255, 255, 255, 0.15);
+    }
     &::placeholder {
       color: transparent;
-    }
-
-    &:focus {
-      border-color: #ff8bfc;
-      background-color: transparent;
-    }
-
-    &:hover {
-      border-color: #a0f6fd;
-      background-color: transparent;
-    }
-
-    &:focus + label,
-    &:not(:placeholder-shown) + label {
-      top: -0.4rem;
-      right: 0.6rem;
-      font-size: 0.9rem;
-      color: #a0f6fd;
-      background-color: transparent;
-      padding: 0 0.5rem;
-      z-index: 2;
+    } /* necesario para :placeholder-shown */
+    &:focus ~ label,
+    &:not(:placeholder-shown) ~ label {
+      transform: translateY(-12px) scale(0.88);
+      opacity: 0.9;
     }
   }
-
   label {
     position: absolute;
-    top: 50%;
-    right: 0.5rem;
-    transform: translateY(-50%);
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
+    top: 0.95rem;
+    left: 0.9rem;
     pointer-events: none;
-    transition: all 0.3s ease-in-out;
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      right: -2px;
-      height: 2px;
-      width: calc(100% + 4px);
-      background: #00000071;
-      z-index: 1;
-      transition: all 0.3s ease-in-out;
-      pointer-events: none;
-    }
-  }
-
-  &:focus-within label::after,
-  &:not(:placeholder-shown) label::after {
-    background: transparent;
-    width: 0;
+    color: rgba(255, 255, 255, 0.85);
+    transition: all 0.18s;
+    font-size: 0.95rem;
   }
 }
 
-.double-column {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 95%;
-  margin: 0 auto;
-}
-
-.email-column {
-  display: grid;
-  grid-template-columns: repeat(1fr);
+/* Botón */
+.primary {
   width: 100%;
-  margin: 0 auto;
-}
-
-// Botones
-button {
-  width: 90%;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #007bff;
-  color: white;
-  border: none;
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  border-radius: 12px;
+  border: 0;
+  color: #fff;
+  background: #1976d2;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
-
+  font-weight: 600;
+  transition: filter 0.15s, transform 0.08s;
   &:hover {
-    background: #0056b3;
+    filter: brightness(1.05);
   }
-}
-.input-group input[type="email"] {
-  width: 98%;
-  margin: 0 auto;
+  &:active {
+    transform: translateY(1px);
+  }
+  &:disabled {
+    opacity: 0.65;
+    cursor: default;
+  }
 }

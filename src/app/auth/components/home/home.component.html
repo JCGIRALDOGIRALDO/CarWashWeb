@@ -43,6 +43,7 @@
       </a>
 
       <a
+        *ngIf="isEmpresa"
         routerLink="/home/appointments"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
@@ -61,9 +62,38 @@
         />
         <span *ngIf="isHovered">Citas</span>
       </a>
+
+      <a
+        *ngIf="isEmpresa && isOwnerOrManager"
+        routerLink="/home/servicios"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <img
+          *ngIf="!isHovered"
+          src="../../../../assets/images/PuntosServicioBlanco.png"
+          alt="Servicios"
+          class="icon"
+        />
+        <img
+          *ngIf="isHovered"
+          src="../../../../assets/images/PuntosServicioAzul.png"
+          alt="Servicios"
+          class="icon"
+        />
+        <span *ngIf="isHovered">Servicios</span>
+      </a>
+
+      <!-- Ejemplo: opción para USUARIO (si más adelante agregas una ruta propia del usuario) -->
+      <!--
+      <a *ngIf="isUsuario"
+         routerLink="/home/mis-vehiculos"
+         routerLinkActive="active">
+         ...
+      </a>
+      -->
     </nav>
 
-    <!-- Cerrar sesión en la parte inferior -->
     <div class="logout">
       <a (click)="logout()">
         <img
@@ -83,7 +113,6 @@
     </div>
   </div>
 
-  <!-- Contenido principal -->
   <div class="main-content">
     <router-outlet></router-outlet>
   </div>

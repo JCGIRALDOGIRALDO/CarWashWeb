@@ -26,6 +26,7 @@ type RegisterType = 'Usuario' | 'Empresa';
 export class RegisterComponent implements OnInit {
   tipo: RegisterType = 'Usuario';
 
+  // FORM USUARIO
   user = {
     firstName: '',
     lastName: '',
@@ -38,6 +39,7 @@ export class RegisterComponent implements OnInit {
   };
   confirmPassword = '';
 
+  // FORM EMPRESA
   company = {
     razonSocial: '',
     nombreComercial: '',
@@ -49,6 +51,8 @@ export class RegisterComponent implements OnInit {
     ciudad: '',
   };
 
+  loading = false;
+
   constructor(
     private usuariosSvc: UsuariosService,
     private empresasSvc: EmpresasService,
@@ -59,16 +63,19 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  changeType(t: RegisterType) {
+    this.tipo = t;
+  }
+
   private notify(msg: string) {
     if (isPlatformBrowser(this.platformId)) window.alert(msg);
     else console.log('[ALERT]', msg);
   }
 
-  changeType(t: RegisterType) {
-    this.tipo = t;
-  }
-
   submit(): void {
+    if (this.loading) return;
+    this.loading = true;
+
     if (this.tipo === 'Usuario') this.registerUsuario();
     else this.registerEmpresa();
   }
@@ -76,12 +83,13 @@ export class RegisterComponent implements OnInit {
   private registerUsuario(): void {
     if (!this.user.password || this.user.password !== this.confirmPassword) {
       this.notify('Las contraseñas no coinciden.');
+      this.loading = false;
       return;
     }
 
     const dto: CreateUsuarioDto = {
       firstName: this.user.firstName.trim(),
-      lastName: this.user.lastName.trim(),
+      lastName: this.user.lastName?.trim(),
       email: this.user.email.trim(),
       password: this.user.password,
       phone: this.user.phoneNumber?.trim() || undefined,
@@ -90,24 +98,24 @@ export class RegisterComponent implements OnInit {
     };
 
     this.usuariosSvc.crear(dto).subscribe({
-      next: (r) => {
+      next: () => {
         this.notify('Usuario registrado exitosamente.');
-        if (!this.auth.isAuthenticated()) {
-          this.auth
-            .login('Usuario', { email: dto.email, password: dto.password })
-            .subscribe(() => this.router.navigate(['/home']));
-        }
+        this.auth
+          .login('Usuario', { email: dto.email, password: dto.password })
+          .subscribe(() => this.router.navigate(['/home']));
       },
       error: (e) => {
         console.error(e);
         this.notify('No se pudo registrar el usuario.');
       },
+      complete: () => (this.loading = false),
     });
   }
 
   private registerEmpresa(): void {
     if (!this.company.password) {
       this.notify('Contraseña requerida.');
+      this.loading = false;
       return;
     }
 
@@ -133,6 +141,7 @@ export class RegisterComponent implements OnInit {
         console.error(e);
         this.notify('No se pudo registrar la empresa.');
       },
+      complete: () => (this.loading = false),
     });
   }
 }

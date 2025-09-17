@@ -1,90 +1,93 @@
-<div class="main-container">
-  <div class="container" [ngClass]="{ 'register-active': isRegistering }">
-    <div class="form-slider-wrapper">
-      <div class="slider-container">
-        <div class="slider-content">
-          <h2 *ngIf="!isRegistering">¡Únete a nosotros!</h2>
-          <h2 *ngIf="isRegistering">¡Bienvenido de nuevo!</h2>
-          <p *ngIf="!isRegistering">
-            Regístrate para obtener una cuenta y aprovechar todos nuestros
-            servicios.
-          </p>
-          <p *ngIf="isRegistering">
-            Inicia sesión para acceder a tu cuenta y disfruta de todos los
-            beneficios y servicios que hemos diseñado para ti.
-          </p>
-        </div>
-      </div>
+<div class="auth">
+  <!-- PANELES (mitad/mitad) -->
+  <div class="panes">
+    <!-- LOGIN (izquierda) -->
+    <section class="panel panel--login">
+      <div class="panel__inner">
+        <h2>Iniciar Sesión</h2>
 
-      <!-- Contenedor de los formularios -->
-      <div class="form-container">
-        <div class="form-wrapper login-form">
-          <h2>Iniciar Sesión</h2>
-          <form (ngSubmit)="login()">
-            <div class="input-group">
-              <input
-                class="email"
-                type="email"
-                [(ngModel)]="email"
-                name="email"
-                required
-                placeholder=" "
-              />
-              <label>Email</label>
-            </div>
+        <form (ngSubmit)="login()" autocomplete="off">
+          <div class="field">
+            <input
+              class="email"
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              required
+              placeholder=" "
+            />
+            <label>Email</label>
+          </div>
 
-            <div class="input-group">
-              <input
-                type="password"
-                [(ngModel)]="password"
-                name="password"
-                required
-                placeholder=" "
-              />
-              <label>Contraseña</label>
-            </div>
+          <div class="field">
+            <input
+              type="password"
+              [(ngModel)]="password"
+              name="password"
+              required
+              placeholder=" "
+            />
+            <label>Contraseña</label>
+          </div>
 
-            <!-- Botones de selección de tipo de usuario -->
-            <div class="user-type-selection">
-              <button
-                type="button"
-                [ngClass]="{ selected: loginType === 'Usuario' }"
-                (click)="setLoginType('Usuario')"
-              >
-                Soy Usuario
-              </button>
-              <button
-                type="button"
-                [ngClass]="{ selected: loginType === 'Empresa' }"
-                (click)="setLoginType('Empresa')"
-              >
-                Soy Empresa
-              </button>
-            </div>
+          <div class="segmented">
+            <button
+              type="button"
+              [class.active]="loginType === 'Usuario'"
+              (click)="setLoginType('Usuario')"
+            >
+              Soy Usuario
+            </button>
+            <button
+              type="button"
+              [class.active]="loginType === 'Empresa'"
+              (click)="setLoginType('Empresa')"
+            >
+              Soy Empresa
+            </button>
+          </div>
 
-            <button type="submit">Iniciar sesión</button>
+          <button class="primary" type="submit">Iniciar sesión</button>
 
-            <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-            <p class="notThis">
-              ¿No tienes una cuenta?
-              <button class="link-btn" (click)="toggleRegister()">
-                Regístrate aquí
-              </button>
-            </p>
-          </form>
-        </div>
+          <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 
-        <!-- Formulario de Registro -->
-        <div class="form-wrapper register-form">
-          <app-register></app-register>
-          <p>
-            ¿Ya tienes una cuenta?
-            <button class="link-btn" (click)="toggleRegister()">
-              Inicia sesión aquí
+          <p class="muted">
+            ¿No tienes una cuenta?
+            <button type="button" class="link" (click)="showRegister()">
+              Regístrate aquí
             </button>
           </p>
-        </div>
+        </form>
       </div>
-    </div>
+    </section>
+
+    <!-- REGISTER (derecha) -->
+    <section class="panel panel--register">
+      <div class="panel__inner">
+        <app-register></app-register>
+        <p class="muted centered">
+          ¿Ya tienes una cuenta?
+          <button type="button" class="link" (click)="showLogin()">
+            Inicia sesión aquí
+          </button>
+        </p>
+      </div>
+    </section>
   </div>
+
+  <!-- TAPA INFORMATIVA (sin botones). Por defecto cubre la DERECHA (registro) -->
+  <aside class="overlay" [class.move-left]="isRegistering">
+    <div class="overlay__content">
+      <img
+        src="../../../assets/images/LogoCarro_blanco.png"
+        alt=""
+        class="overlay__logo"
+      />
+      <h3>¡Únete a nosotros!</h3>
+      <p>
+        Regístrate para obtener una cuenta y aprovechar todos nuestros
+        servicios.
+      </p>
+    </div>
+  </aside>
 </div>

@@ -1,249 +1,183 @@
-// Fondo del contenedor principal
-.main-container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: url("../../../assets/images/fondo_login.png") no-repeat center
-    center/cover;
-
-  // Contenedor de Login y Registro
-  .container {
-    width: clamp(50%, 60%, 90%);
-    height: clamp(50vh, 80vh, 90vh);
-    display: flex;
-    position: relative;
-    overflow: hidden;
-    border-radius: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    background: #00000071;
-
-    // Slider que se mueve entre Login y Registro
-    .slider-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 50%;
-      height: 100%;
-      background: url("../../../assets/images/car_whas_1.jpg") no-repeat center
-        center/cover;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      z-index: 3;
-      transition: transform 1.2s ease-in-out;
-
-      .slider-content {
-        margin-top: 30rem;
-        width: 80%;
-        color: white;
-      }
-    }
-
-    // Estado activado del registro
-    &.register-active {
-      .slider-container {
-        transform: translateX(100%);
-      }
-    }
-
-    // Contenedor de formularios (Login y Registro)
-    .form-container {
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      transition: transform 1.2s ease-in-out;
-
-      // Formulario de Login y Registro divididos
-      .form-wrapper {
-        flex: 1;
-        width: 100%;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        gap: 1rem;
-
-        .email {
-          margin: 0 auto;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        // Formulario de login
-        &.login-form {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          align-content: center;
-          color: white;
-          gap: 1rem;
-        }
-
-        // Formulario de registro
-        &.register-form {
-          width: 100%;
-          color: white;
-          button {
-            width: 90%;
-            background: #007bff;
-            &:hover {
-              background: #0056b3;
-            }
-          }
-        }
-      }
-    }
-  }
+:host {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background: url("../../../assets/images/fondo_login.png") center/cover
+    no-repeat fixed;
 }
 
-// Estilos para los inputs
-.input-group {
+/* Caja principal */
+.auth {
+  width: min(1100px, 94vw);
+  height: clamp(560px, 78vh, 760px);
   position: relative;
-  width: 80%;
-  margin: 0 auto;
-  gap: 1.5rem;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+}
 
+/* Dos mitades para formularios */
+.panes {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 1;
+}
+
+.panel {
+  flex: 1 0 50%;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.4rem;
+  color: #fff;
+}
+.panel__inner {
+  width: min(420px, 86%);
+}
+
+/* Inputs con etiqueta flotante */
+.field {
+  position: relative;
+  margin: 1rem 0;
   input {
     width: 100%;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    margin-top: 2.5rem;
-    background: transparent;
-    color: white;
-    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
-
+    padding: 1rem 0.9rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    outline: 0;
+    transition: border 0.15s, background 0.15s;
     &:hover {
-      border-color: #a0f6fd;
-      background-color: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
     }
-
     &:focus {
-      outline: none;
-      border-color: #ff8bfc;
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
+      border-color: #90caf9;
+      background: rgba(255, 255, 255, 0.15);
     }
-
-    &:focus + label,
-    &:not(:placeholder-shown) + label {
-      top: -10px;
-      left: 1rem;
-      font-size: 0.8rem;
-      color: #a0f6fd;
+    &::placeholder {
+      color: transparent;
+    }
+    &:focus ~ label,
+    &:not(:placeholder-shown) ~ label {
+      transform: translateY(-12px) scale(0.88);
+      opacity: 0.9;
     }
   }
-
   label {
-    top: 50%;
-    left: 1rem;
-    transform: translateY(-50%);
-    font-size: 1rem;
-    color: white;
-    transition: all 0.3s ease-in-out;
     pointer-events: none;
-  }
-}
-
-// Estilos para botones
-button {
-  width: 80%;
-  padding: 1rem;
-  margin-top: 2rem;
-  margin-bottom: 3rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease-in-out;
-
-  &:hover {
-    background: #0056b3;
-  }
-}
-.link-btn {
-  margin-top: 0.1rem;
-  margin-bottom: -3rem;
-}
-// Media queries para responsividad
-@media (max-width: 1024px) {
-  .container {
-    width: 80%;
-    height: 70vh;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    width: 90%;
-    height: 60vh;
-    flex-direction: column;
-
-    .slider-container {
-      width: 100%;
-      height: 40%;
-      top: 0;
-      left: 0;
-      transform: translateY(0);
-    }
-
-    &.register-active {
-      .slider-container {
-        transform: translateY(100%);
-      }
-    }
-
-    .form-container {
-      flex-direction: column;
-
-      .form-wrapper {
-        width: 100%;
-      }
-    }
-  }
-}
-.user-type-selection {
-  width: 80%;
-  margin: 0 auto;
-  display: flex;
-  gap: 1.2rem;
-  justify-content: center;
-  margin-bottom: -2.5rem; // Acerca los botones al botón de login
-
-  button {
-    padding: 0.6rem 1.5rem;
-    border: none;
-    border-radius: 8px;
+    position: absolute;
+    top: 0.95rem;
+    left: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    transition: all 0.18s ease;
     font-size: 0.95rem;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: white;
+  }
+}
+
+/* Botones */
+.primary {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.95rem 1rem;
+  border-radius: 12px;
+  border: 0;
+  color: #fff;
+  background: #1976d2;
+  cursor: pointer;
+  font-weight: 600;
+  transition: filter 0.15s, transform 0.08s;
+  &:hover {
+    filter: brightness(1.05);
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+}
+.segmented {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.4rem 0 1rem;
+  button {
+    flex: 1;
+    border: 0;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
     cursor: pointer;
-    transition: all 0.3s ease;
-
+    transition: transform 0.12s, background 0.2s, box-shadow 0.2s;
     &:hover {
-      background-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
     }
+    &.active {
+      background: #1976d2;
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.25) inset;
+    }
+  }
+}
+.error {
+  color: #ff8b8b;
+  margin-top: 0.75rem;
+}
+.muted {
+  color: #d8d8d8;
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
+}
+.muted.centered {
+  text-align: center;
+}
+.link {
+  background: none;
+  border: 0;
+  color: #90caf9;
+  cursor: pointer;
+  padding: 0 0.15rem;
+  text-decoration: underline;
+}
 
-    &.selected {
-      background-color: #ff8bfc;
-      color: white;
-      font-weight: bold;
-      box-shadow: 0 0 10px #ff8bfc;
-    }
+/* TAPA (INICIAL A LA DERECHA). Solo texto/imagen, sin botones */
+.overlay {
+  position: absolute;
+  inset: 0 0 0 auto; /* anclada a la DERECHA */
+  width: 50%;
+  height: 100%;
+  z-index: 2;
+  background: url("../../../assets/images/car_whas_1.jpg") center/cover
+    no-repeat;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: inset 120px 0 120px rgba(0, 0, 0, 0.35); /* sombra hacia la izquierda */
+}
+/* Cuando pasamos a registro, la tapa se mueve a la IZQUIERDA y cubre el login */
+.overlay.move-left {
+  transform: translateX(-100%);
+  box-shadow: inset -120px 0 120px rgba(0, 0, 0, 0.35);
+}
+.overlay__content {
+  width: min(420px, 86%);
+  text-align: center;
+  backdrop-filter: blur(2px);
+}
+.overlay__logo {
+  width: 110px;
+  margin-bottom: 0.75rem;
+}
+
+/* Responsive: en móvil ocultamos la tapa para evitar solape */
+@media (max-width: 860px) {
+  .auth {
+    height: auto;
+  }
+  .overlay {
+    display: none;
+  }
+  .panel {
+    padding: 2.2rem 1rem;
   }
 }
